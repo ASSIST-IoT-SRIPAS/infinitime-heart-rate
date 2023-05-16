@@ -6,6 +6,7 @@
 
 #include "drivers/Bma421.h"
 #include "components/ble/MotionService.h"
+#include "components/ble/HeartRateService.h"
 
 namespace Pinetime {
   namespace Controllers {
@@ -60,6 +61,10 @@ namespace Pinetime {
         this->service = service;
       }
 
+      void setHeartRateService(Pinetime::Controllers::HeartRateService* service) {
+        this->hrservice = service;
+      }
+
     private:
       uint32_t nbSteps = 0;
       uint32_t currentTripSteps = 0;
@@ -77,6 +82,7 @@ namespace Pinetime {
 
       DeviceTypes deviceType = DeviceTypes::Unknown;
       Pinetime::Controllers::MotionService* service = nullptr;
+      Pinetime::Controllers::HeartRateService* hrservice = nullptr;
     };
   }
 }
