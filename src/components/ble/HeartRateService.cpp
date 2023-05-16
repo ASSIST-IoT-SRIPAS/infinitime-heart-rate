@@ -3,6 +3,7 @@
 #include "components/motion/MotionController.h"
 #include "components/ble/NimbleController.h"
 #include <nrf_log.h>
+#include <cmath>
 
 using namespace Pinetime::Controllers;
 
@@ -527,7 +528,16 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
 
   filter_hr(&input_1_input, &dense_output);
 
-  uint8_t buffer[3] = {0, heartRateValue, uint8_t(dense_output.array[0])}; // [0] = flags, [1] = hr value
+  int output = (int)dense_output.array[0];
+  uint8_t inference;
+  if(output < 0){
+  inference = 0;
+  }else if(output > 255){
+  inference = 255;
+  }else{
+  inference = (uint8_t)output;
+  }
+  uint8_t buffer[3] = {0, heartRateValue, inference}; // [0] = flags, [1] = hr value
   auto* om = ble_hs_mbuf_from_flat(buffer, 3);
 
   uint16_t connectionHandle = nimble.connHandle();
@@ -543,53 +553,22 @@ void HeartRateService::OnNewMotionValues(int16_t x, int16_t y, int16_t z) {
   if (!heartRateMeasurementNotificationEnable)
     return;
 
-  float alpha = 0.29870618761437979596f;
-  float beta = 0.59741237522875959192f;
-  float gamma = 0.93980863517232523127f;
-  float min, med, max, t;
+  // float alpha = 0.29870618761437979596f;
+  // float beta = 0.59741237522875959192f;
+  // float gamma = 0.93980863517232523127f;
+  // float min, med, max, t;
 
-  int16_t tmp = x >> 15;
-  x = (x ^ tmp) - tmp;
-  tmp = y >> 15;
-  y = (y ^ tmp) - tmp;
-  tmp = z >> 15;
-  z = (z ^ tmp) - tmp;
-  min = x/2048.0f;
-  med = y/2048.0f;
-  max = z/2048.0f;
-
-  if (min > max)
-  {
-    t = max;
-    max = min;
-    min = t;
-  }
-  if (min > med)
-  {
-    t = min;
-    min = med;
-    med = t;
-  }
-  if (med > max)
-  {
-    t = med;
-    med = max;
-    max = t;
-  }
-
-  float L = alpha * min + beta * med + gamma * max;
+  // int16_t tmp = x >> 15;
+  // x = (x ^ tmp) - tmp;
+  // tmp = y >> 15;
+  // y = (y ^ tmp) - tmp;
+  // tmp = z >> 15;
+  // z = (z ^ tmp) - tmp;
+  float fx = float(x);// /2048.0f;
+  float fy = float(y);// /2048.0f;
+  float fz = float(z);// /2048.0f;
+  float L = sqrt(fx*fx + fy*fy + fz*fz);
   insert_into_buffer_1(L);
-
-  // uint8_t buffer[6] = {0, static_cast<uint8_t>(x), static_cast<uint8_t>(y), static_cast<uint8_t>(z), 0, 0}; // [0] = flags, [1] = hr value
-  // auto* om = ble_hs_mbuf_from_flat(buffer, 6);
-  //
-  // uint16_t connectionHandle = nimble.connHandle();
-  //
-  // if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE) {
-  //   return;
-  // }
-
-  //ble_gattc_notify_custom(connectionHandle, motionValuesHandle, om);
 }
 
 void HeartRateService::insert_into_buffer_1(float value){
