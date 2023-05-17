@@ -71,11 +71,11 @@ namespace Pinetime {
       uint16_t heartRateMeasurementHandle;
       uint16_t motionValuesHandle;
       
-      uint8_t heartRateMeasurementBuffer[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
-      uint16_t hr_buffer_index = 0;
+      float heartRateMeasurementBuffer[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
+      uint8_t hr_buffer_index = 0;
 
       acc_data_t acc_data_buffer[3];
-      uint16_t acc_buffer_index = 0;
+      uint8_t acc_buffer_index = 0;
 
 
       float buffer_1[BUFFER_1_LENGTH];

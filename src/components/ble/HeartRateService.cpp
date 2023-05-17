@@ -471,7 +471,7 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   normal_iqr = normalize(iqr, iqr_mean, iqr_std_inv);
   normal_max = normalize(max, max_mean, max_std_inv);
 
-  heartRateMeasurementBuffer[hr_buffer_index] = uint8_t(normal_hr);
+  heartRateMeasurementBuffer[hr_buffer_index] = normal_hr;
   hr_buffer_index = (hr_buffer_index + 1) % 5;
   acc_data_t window = {normal_median, normal_max, normal_iqr};
   acc_data_buffer[acc_buffer_index] = window;
@@ -496,17 +496,17 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
 
   filter_hr(&input_1_input, &dense_output);
 
-  float inference = dense_output.array[0];
-  // uint8_t inference;
-  // if(output < 0){
-  // inference = 0;
-  // }else if(output > 255){
-  // inference = 255;
-  // }else{
-  // inference = (uint8_t)output;
-  // }
-  float buffer[3] = {0.0f, (float)heartRateValue, inference}; // [0] = flags, [1] = hr value
-  auto* om = ble_hs_mbuf_from_flat(buffer, 3*sizeof(float));
+  float output = dense_output.array[0];
+  uint8_t inference;
+  if(output < 0){
+  inference = 0;
+  }else if(output > 255){
+  inference = 255;
+  }else{
+  inference = (uint8_t)output;
+  }
+  uint8_t buffer[3] = {0, heartRateValue, inference}; // [0] = flags, [1] = hr value 
+  auto* om = ble_hs_mbuf_from_flat(buffer, 3);
 
   uint16_t connectionHandle = nimble.connHandle();
 
@@ -540,19 +540,19 @@ void HeartRateService::OnNewMotionValues(int16_t x, int16_t y, int16_t z) {
   float fz = float(z);// /2048.0f;
   float L = sqrt(fx*fx + fy*fy + fz*fz);
   insert_into_buffer_1(L);
-  if (!heartRateMeasurementNotificationEnable)
-    return;
+  // if (!heartRateMeasurementNotificationEnable)
+  //   return;
 
-  int16_t buffer[4] = {1, x, y, z}; // [0] = flags, [1] = hr value
-  auto* om = ble_hs_mbuf_from_flat(buffer, 4*sizeof(int16_t));
+  // int16_t buffer[4] = {1, x, y, z}; // [0] = flags, [1] = hr value
+  // auto* om = ble_hs_mbuf_from_flat(buffer, 4*sizeof(int16_t));
 
-  uint16_t connectionHandle = nimble.connHandle();
+  // uint16_t connectionHandle = nimble.connHandle();
 
-  if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE) {
-    return;
-  }
+  // if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE) {
+  //   return;
+  // }
 
-  ble_gattc_notify_custom(connectionHandle, heartRateMeasurementHandle, om);
+  // ble_gattc_notify_custom(connectionHandle, heartRateMeasurementHandle, om);
 }
 
 void HeartRateService::insert_into_buffer_1(float value){
