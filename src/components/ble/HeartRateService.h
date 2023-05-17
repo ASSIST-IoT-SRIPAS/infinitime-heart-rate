@@ -6,7 +6,7 @@
 #undef max
 #undef min
 
-#define BUFFER_1_LENGTH 256
+#define BUFFER_1_LENGTH 200
 #define K2C_MAX_NDIM 5
 
 namespace Pinetime {
@@ -71,7 +71,7 @@ namespace Pinetime {
       uint16_t heartRateMeasurementHandle;
       uint16_t motionValuesHandle;
       
-      uint8_t heartRateMeasurementBuffer[7] = {0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
+      uint8_t heartRateMeasurementBuffer[5] = {0x00, 0x00, 0x00, 0x00, 0x00};
       uint16_t hr_buffer_index = 0;
 
       acc_data_t acc_data_buffer[3];
@@ -79,7 +79,7 @@ namespace Pinetime {
 
 
       float buffer_1[BUFFER_1_LENGTH];
-      uint16_t buffer_1_index = 0;
+      uint8_t buffer_1_index = 0;
 
 
       void insert_into_buffer_1(float value);

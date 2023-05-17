@@ -37,6 +37,7 @@ HeartRateService::HeartRateService(NimbleController& nimble, Controllers::HeartR
     } {
   // TODO refactor to prevent this loop dependency (service depends on controller and controller depends on service)
   heartRateController.SetService(this);
+  motionController.setHeartRateService(this);
 }
 
 void HeartRateService::Init() {
@@ -309,161 +310,130 @@ void k2c_dense(k2c_tensor* output, const k2c_tensor* input, const k2c_tensor* ke
         activation(output->array, output->numel);
     }
 }
-
 void filter_hr(k2c_tensor *input_1_input, k2c_tensor *dense_2_output)
 {
 
-	float dense_output_array[6] = {0};
-	k2c_tensor dense_output = {&dense_output_array[0], 1, 6, {6, 1, 1, 1, 1}};
-	float dense_kernel_array[96] = {
-		-2.58158654e-01f,
-		-2.44613945e-01f,
-		+1.08642466e-01f,
-		+4.85975236e-01f,
-		-6.88496903e-02f,
-		-7.39336386e-02f,
-		-3.37832943e-02f,
-		-9.29711834e-02f,
-		+6.06957190e-02f,
-		+1.55360013e-01f,
-		-9.12086889e-02f,
-		+1.50157744e-02f,
-		+1.10843286e-01f,
-		+1.67677894e-01f,
-		+5.93186431e-02f,
-		+2.50057787e-01f,
-		-7.85016194e-02f,
-		-2.44503081e-01f,
-		-1.96207389e-01f,
-		-2.31089577e-01f,
-		+1.37382984e-01f,
-		+1.68632016e-01f,
-		-7.93497190e-02f,
-		+1.93708673e-01f,
-		-1.61212757e-02f,
-		-5.61313592e-02f,
-		+5.87342270e-02f,
-		+3.39311928e-01f,
-		-1.13524877e-01f,
-		-1.58384189e-01f,
-		-1.09716266e-01f,
-		-2.35723734e-01f,
-		+1.32731926e-02f,
-		+3.01779091e-01f,
-		-6.66517690e-02f,
-		-2.28142608e-02f,
-		-2.25188568e-01f,
-		-3.80537182e-01f,
-		+8.05058051e-03f,
-		+5.03761232e-01f,
-		-1.84331432e-01f,
-		-4.32336815e-02f,
-		-6.72802687e-01f,
-		+4.54484582e-01f,
-		+1.66620463e-02f,
-		-8.81252736e-02f,
-		-6.27342343e-01f,
-		+7.84739628e-02f,
-		-8.71884882e-01f,
-		+2.76478410e-01f,
-		-2.51699123e-04f,
-		+5.04019186e-02f,
-		-4.74103421e-01f,
-		+4.30929400e-02f,
-		-6.13183916e-01f,
-		+3.92687201e-01f,
-		+2.43710782e-02f,
-		+5.74506037e-02f,
-		-6.20829701e-01f,
-		-4.39548343e-02f,
-		-7.51653492e-01f,
-		+1.28839898e+00f,
-		+1.02290559e+00f,
-		-1.69256870e-02f,
-		-3.13063353e-01f,
-		+1.95472986e-01f,
-		-8.97551715e-01f,
-		+1.01045191e+00f,
-		+1.01934123e+00f,
-		+2.34510422e-01f,
-		-2.55330175e-01f,
-		+2.16395304e-01f,
-		-7.66702175e-01f,
-		+1.07088792e+00f,
-		+1.00034547e+00f,
-		+1.23643830e-01f,
-		-1.42470032e-01f,
-		+2.78010130e-01f,
-		-7.73911059e-01f,
-		+5.99939585e-01f,
-		+4.36002851e-01f,
-		+1.53453469e-01f,
-		-5.13873875e-01f,
-		+7.38157406e-02f,
-		-8.00532341e-01f,
-		+8.04396689e-01f,
-		+4.71778840e-01f,
-		-6.46034181e-02f,
-		-3.08885366e-01f,
-		+1.83434457e-01f,
-		-1.24854648e+00f,
-		+2.55470514e-01f,
-		+3.40454400e-01f,
-		-4.13677335e-01f,
-		-5.71978688e-01f,
-		+7.69954324e-01f,
+	float dense_output_array[5] = {0};
+	k2c_tensor dense_output = {&dense_output_array[0], 1, 5, {5, 1, 1, 1, 1}};
+	float dense_kernel_array[70] = {
+		+1.32475480e-01f,
+		-2.07969129e-01f,
+		-6.28441647e-02f,
+		-2.23078877e-01f,
+		+4.67773914e-01f,
+		+1.65286988e-01f,
+		-1.19773403e-01f,
+		-3.31767201e-02f,
+		-2.13741750e-01f,
+		+3.92813295e-01f,
+		+1.88546658e-01f,
+		+9.24906656e-02f,
+		-4.34105098e-02f,
+		-3.25261533e-01f,
+		+3.30314070e-01f,
+		+8.06150436e-02f,
+		-3.06826085e-01f,
+		-1.11830756e-01f,
+		-2.43933335e-01f,
+		+5.26623845e-01f,
+		-4.30477485e-02f,
+		-2.18617827e-01f,
+		-2.79851645e-01f,
+		-1.50043219e-01f,
+		+4.91588354e-01f,
+		-1.85484946e-01f,
+		+8.42012107e-01f,
+		-1.16314605e-01f,
+		-9.40099806e-02f,
+		-3.64203811e-01f,
+		-3.51195097e-01f,
+		-1.14956714e-01f,
+		-2.11638376e-01f,
+		+1.83922753e-01f,
+		+6.37402162e-02f,
+		-2.03109905e-01f,
+		+5.57329655e-01f,
+		-4.85371612e-02f,
+		+1.20075010e-01f,
+		-3.50884706e-01f,
+		+1.11253059e+00f,
+		+8.78382921e-02f,
+		+1.75404894e+00f,
+		-1.99888319e-01f,
+		-6.78730682e-02f,
+		+1.05380464e+00f,
+		-3.28812897e-01f,
+		+1.69213068e+00f,
+		-1.01909250e-01f,
+		+2.30438828e-01f,
+		+1.12415779e+00f,
+		-5.29852994e-02f,
+		+1.72619343e+00f,
+		-2.91128904e-01f,
+		+1.40579164e-01f,
+		+8.04500103e-01f,
+		+3.62950027e-01f,
+		+6.63389564e-01f,
+		-1.57677853e+00f,
+		+5.57882905e-01f,
+		+7.38817155e-01f,
+		+5.52606165e-01f,
+		+7.65338540e-01f,
+		-1.41045296e+00f,
+		+2.38556400e-01f,
+		+5.30926704e-01f,
+		+3.08245897e-01f,
+		+5.19681573e-01f,
+		-1.47998834e+00f,
+		+4.20226306e-01f,
 	};
-	k2c_tensor dense_kernel = {&dense_kernel_array[0], 2, 96, {16, 6, 1, 1, 1}};
-	float dense_bias_array[6] = {
-		+1.86099494e+00f,
-		+2.36612797e+00f,
-		-2.70977783e+00f,
-		+2.99464345e+00f,
-		-2.20068145e+00f,
-		+2.46976781e+00f,
+	k2c_tensor dense_kernel = {&dense_kernel_array[0], 2, 70, {14, 5, 1, 1, 1}};
+	float dense_bias_array[5] = {
+		-3.18272281e+00f,
+		+3.22764540e+00f,
+		+1.96194828e+00f,
+		+2.39016509e+00f,
+		+3.72706556e+00f,
 	};
-	k2c_tensor dense_bias = {&dense_bias_array[0], 1, 6, {6, 1, 1, 1, 1}};
-	float dense_fwork[112] = {0};
+	k2c_tensor dense_bias = {&dense_bias_array[0], 1, 5, {5, 1, 1, 1, 1}};
+	float dense_fwork[84] = {0};
 
 	float dense_1_output_array[3] = {0};
 	k2c_tensor dense_1_output = {&dense_1_output_array[0], 1, 3, {3, 1, 1, 1, 1}};
-	float dense_1_kernel_array[18] = {
-		+1.43555534e+00f,
-		+1.09452999e+00f,
-		+5.86435981e-02f,
-		+8.85292470e-01f,
-		+2.20836803e-01f,
-		+1.43920517e+00f,
-		-1.90961528e+00f,
-		-2.27426362e+00f,
-		-1.75510037e+00f,
-		+2.05552316e+00f,
-		+5.04008412e-01f,
-		+7.35774994e-01f,
-		-1.65641284e+00f,
-		-1.49038696e+00f,
-		-2.19002080e+00f,
-		+1.61937487e+00f,
-		+1.65267706e+00f,
-		+6.40851200e-01f,
+	float dense_1_kernel_array[15] = {
+		-2.81447721e+00f,
+		-1.18621242e+00f,
+		-2.66759825e+00f,
+		+5.22655189e-01f,
+		-1.26474881e+00f,
+		+1.63659644e+00f,
+		+1.23717082e+00f,
+		+1.06179047e+00f,
+		+1.17732739e+00f,
+		+1.52103090e+00f,
+		+1.31279671e+00f,
+		+1.85956526e+00f,
+		+1.58452201e+00f,
+		-1.34456158e+00f,
+		+1.42684138e+00f,
 	};
-	k2c_tensor dense_1_kernel = {&dense_1_kernel_array[0], 2, 18, {6, 3, 1, 1, 1}};
+	k2c_tensor dense_1_kernel = {&dense_1_kernel_array[0], 2, 15, {5, 3, 1, 1, 1}};
 	float dense_1_bias_array[3] = {
-		+1.97888076e+00f,
-		+2.54777026e+00f,
-		+2.63073134e+00f,
+		+2.62100363e+00f,
+		-4.62743968e-01f,
+		+2.52842808e+00f,
 	};
 	k2c_tensor dense_1_bias = {&dense_1_bias_array[0], 1, 3, {3, 1, 1, 1, 1}};
-	float dense_1_fwork[24] = {0};
+	float dense_1_fwork[20] = {0};
 
 	float dense_2_kernel_array[3] = {
-		+2.42817879e+00f,
-		+2.08857155e+00f,
-		+2.20083642e+00f,
+		+2.74574351e+00f,
+		-4.06549311e+00f,
+		+2.16978478e+00f,
 	};
 	k2c_tensor dense_2_kernel = {&dense_2_kernel_array[0], 2, 3, {3, 1, 1, 1, 1}};
 	float dense_2_bias_array[1] = {
-		+1.62773621e+00f,
+		+1.83690488e+00f,
 	};
 	k2c_tensor dense_2_bias = {&dense_2_bias_array[0], 1, 1, {1, 1, 1, 1, 1}};
 	float dense_2_fwork[6] = {0};
@@ -502,43 +472,41 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   normal_max = normalize(max, max_mean, max_std_inv);
 
   heartRateMeasurementBuffer[hr_buffer_index] = uint8_t(normal_hr);
-  hr_buffer_index = (hr_buffer_index + 1) % 7;
+  hr_buffer_index = (hr_buffer_index + 1) % 5;
   acc_data_t window = {normal_median, normal_max, normal_iqr};
   acc_data_buffer[acc_buffer_index] = window;
   acc_buffer_index = (acc_buffer_index + 1) % 3;
 
-  // effectively clears the buffer
-  buffer_1_index = 0;
 
-  float input_buffer[16];
+  float input_buffer[14];
 
-  for(int i=0; i<7; i++){
-    input_buffer[i] = heartRateMeasurementBuffer[(hr_buffer_index - 1 + i) % 7];
+  for(int i=0; i<5; i++){
+    input_buffer[i] = heartRateMeasurementBuffer[(hr_buffer_index + i) % 5];
   }
 
   for(int i=0; i<3; i++){
-    input_buffer[7 + i] = acc_data_buffer[(acc_buffer_index-1 + i) % 3].median;
-    input_buffer[10 + i] = acc_data_buffer[(acc_buffer_index-1 + i) % 3].max;
-    input_buffer[13 + i] = acc_data_buffer[(acc_buffer_index-1 + i) % 3].iqr;
+    input_buffer[5 + i] = acc_data_buffer[(acc_buffer_index + i) % 3].median;
+    input_buffer[8 + i] = acc_data_buffer[(acc_buffer_index + i) % 3].max;
+    input_buffer[11 + i] = acc_data_buffer[(acc_buffer_index + i) % 3].iqr;
   }
 
-  k2c_tensor input_1_input = {&input_buffer[0], 1, 16, {16, 1, 1, 1, 1}};
+  k2c_tensor input_1_input = {&input_buffer[0], 1, 14, {14, 1, 1, 1, 1}};
   float dense_output_array[1] = {0};
   k2c_tensor dense_output = {&dense_output_array[0], 1, 1, {1, 1, 1, 1, 1}};
 
   filter_hr(&input_1_input, &dense_output);
 
-  int output = (int)dense_output.array[0];
-  uint8_t inference;
-  if(output < 0){
-  inference = 0;
-  }else if(output > 255){
-  inference = 255;
-  }else{
-  inference = (uint8_t)output;
-  }
-  uint8_t buffer[3] = {0, heartRateValue, inference}; // [0] = flags, [1] = hr value
-  auto* om = ble_hs_mbuf_from_flat(buffer, 3);
+  float inference = dense_output.array[0];
+  // uint8_t inference;
+  // if(output < 0){
+  // inference = 0;
+  // }else if(output > 255){
+  // inference = 255;
+  // }else{
+  // inference = (uint8_t)output;
+  // }
+  float buffer[3] = {0.0f, (float)heartRateValue, inference}; // [0] = flags, [1] = hr value
+  auto* om = ble_hs_mbuf_from_flat(buffer, 3*sizeof(float));
 
   uint16_t connectionHandle = nimble.connHandle();
 
@@ -547,6 +515,9 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   }
 
   ble_gattc_notify_custom(connectionHandle, heartRateMeasurementHandle, om);
+   
+  // effectively clears the buffer
+  buffer_1_index = 0;
 }
 
 void HeartRateService::OnNewMotionValues(int16_t x, int16_t y, int16_t z) {
@@ -569,6 +540,19 @@ void HeartRateService::OnNewMotionValues(int16_t x, int16_t y, int16_t z) {
   float fz = float(z);// /2048.0f;
   float L = sqrt(fx*fx + fy*fy + fz*fz);
   insert_into_buffer_1(L);
+  if (!heartRateMeasurementNotificationEnable)
+    return;
+
+  int16_t buffer[4] = {1, x, y, z}; // [0] = flags, [1] = hr value
+  auto* om = ble_hs_mbuf_from_flat(buffer, 4*sizeof(int16_t));
+
+  uint16_t connectionHandle = nimble.connHandle();
+
+  if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE) {
+    return;
+  }
+
+  ble_gattc_notify_custom(connectionHandle, heartRateMeasurementHandle, om);
 }
 
 void HeartRateService::insert_into_buffer_1(float value){
