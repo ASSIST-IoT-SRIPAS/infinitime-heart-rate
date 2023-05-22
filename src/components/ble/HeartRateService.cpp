@@ -3,7 +3,9 @@
 #include "components/motion/MotionController.h"
 #include "components/ble/NimbleController.h"
 #include <nrf_log.h>
+#include <hal/nrf_rtc.h>
 #include <cmath>
+#include <time.h>
 
 using namespace Pinetime::Controllers;
 
@@ -477,7 +479,6 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   acc_data_buffer[acc_buffer_index] = window;
   acc_buffer_index = (acc_buffer_index + 1) % 3;
 
-
   float input_buffer[14];
 
   for(int i=0; i<5; i++){
@@ -493,7 +494,6 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   k2c_tensor input_1_input = {&input_buffer[0], 1, 14, {14, 1, 1, 1, 1}};
   float dense_output_array[1] = {0};
   k2c_tensor dense_output = {&dense_output_array[0], 1, 1, {1, 1, 1, 1, 1}};
-
   filter_hr(&input_1_input, &dense_output);
 
   float output = dense_output.array[0];
@@ -505,8 +505,8 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   }else{
   inference = (uint8_t)output;
   }
-  uint8_t buffer[3] = {0, heartRateValue, inference}; // [0] = flags, [1] = hr value 
-  auto* om = ble_hs_mbuf_from_flat(buffer, 3);
+  uint8_t buffer[2] = {buffer_1_index, inference}; // [0] = flags, [1] = hr value 
+  auto* om = ble_hs_mbuf_from_flat(buffer, 2);
 
   uint16_t connectionHandle = nimble.connHandle();
 
@@ -524,54 +524,38 @@ void HeartRateService::OnNewMotionValues(int16_t x, int16_t y, int16_t z) {
   if (!heartRateMeasurementNotificationEnable)
     return;
 
-  // float alpha = 0.29870618761437979596f;
-  // float beta = 0.59741237522875959192f;
-  // float gamma = 0.93980863517232523127f;
-  // float min, med, max, t;
-
-  // int16_t tmp = x >> 15;
-  // x = (x ^ tmp) - tmp;
-  // tmp = y >> 15;
-  // y = (y ^ tmp) - tmp;
-  // tmp = z >> 15;
-  // z = (z ^ tmp) - tmp;
-  float fx = float(x);// /2048.0f;
-  float fy = float(y);// /2048.0f;
-  float fz = float(z);// /2048.0f;
+  float fx = float(x);
+  float fy = float(y);
+  float fz = float(z);
   float L = sqrt(fx*fx + fy*fy + fz*fz);
   insert_into_buffer_1(L);
-  // if (!heartRateMeasurementNotificationEnable)
-  //   return;
-
-  // int16_t buffer[4] = {1, x, y, z}; // [0] = flags, [1] = hr value
-  // auto* om = ble_hs_mbuf_from_flat(buffer, 4*sizeof(int16_t));
-
-  // uint16_t connectionHandle = nimble.connHandle();
-
-  // if (connectionHandle == 0 || connectionHandle == BLE_HS_CONN_HANDLE_NONE) {
-  //   return;
-  // }
-
-  // ble_gattc_notify_custom(connectionHandle, heartRateMeasurementHandle, om);
 }
 
 void HeartRateService::insert_into_buffer_1(float value){
   if(buffer_1_index >= BUFFER_1_LENGTH)
+    // this never happens in practice
+    // , as the buffer has a lot of extra length
     buffer_1_index = 0;
-  buffer_1[buffer_1_index] = value;
+
+  int i = buffer_1_index - 1;
+  while(i >= 0 && buffer_1[i] > value){
+      buffer_1[i+1] = buffer_1[i];
+      i--;
+  }
+  buffer_1[i+1] = value;
   buffer_1_index++;
 
-
-  // sort buffer_1 with insertion sort from 0 to buffer_1_index
-  for(int i = 1; i < buffer_1_index; i++){
-    float key = buffer_1[i];
-    int j = i - 1;
-    while(j >= 0 && buffer_1[j] > key){
-      buffer_1[j+1] = buffer_1[j];
-      j--;
-    }
-    buffer_1[j+1] = key;
-  }
+  // todo change to inserting into a sorted array
+  // for(int i = 1; i < buffer_1_index; i++){
+  //   float key = buffer_1[i];
+  //   int j = i - 1;
+  //   while(j >= 0 && buffer_1[j] > key){
+  //     buffer_1[j+1] = buffer_1[j];
+  //     j--;
+  //   }
+  //   buffer_1[j+1] = key;
+  // }
+  
 }
 
 
