@@ -6,6 +6,11 @@
         {
             "id": "10.13039/501100000780::957258"
         }
+    ],
+    "communities": [
+        {
+            "identifier": "assist-iot"
+        }
     ], 
     "upload_type": "software", 
     "creators": [
