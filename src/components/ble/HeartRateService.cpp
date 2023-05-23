@@ -505,7 +505,7 @@ void HeartRateService::OnNewHeartRateValue(uint8_t heartRateValue) {
   }else{
   inference = (uint8_t)output;
   }
-  uint8_t buffer[2] = {buffer_1_index, inference}; // [0] = flags, [1] = hr value 
+  uint8_t buffer[2] = {0, inference}; // [0] = flags, [1] = hr value 
   auto* om = ble_hs_mbuf_from_flat(buffer, 2);
 
   uint16_t connectionHandle = nimble.connHandle();

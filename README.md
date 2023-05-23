@@ -1,3 +1,12 @@
+# About
+
+This repository is a fork of the [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime) project, developed for the purposes of Pilot 2: Smart Safety of workers of the [Assist-IoT](https://assist-iot.eu) Horizon 2020 project.
+It deploys a neural network based model to improve the quality of readings from the onboard heart rate sensor.
+The model has been developed keeping in mind the principles of frugality, which ensures that all existing InfiniTime functionalities operate smoothely.
+
+What follows is the description of the Infinitime project, which includes guidelines for building and deployment of the solution on the PineTime smartwatch.
+
+
 # [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime)
 
 ![InfiniTime logo](doc/logo/infinitime-logo-small.jpg "InfiniTime Logo")
