@@ -1,8 +1,12 @@
+[![DOI](https://zenodo.org/badge/643984762.svg)](https://zenodo.org/badge/latestdoi/643984762)
+
 # About
 
 This repository is a fork of the [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime) project, developed for the purposes of Pilot 2: Smart Safety of workers of the [ASSIST-IoT](https://assist-iot.eu) Horizon 2020 project.
 It deploys a neural network based model to improve the quality of readings from the onboard heart rate sensor.
 The model has been developed keeping in mind the principles of frugality, which ensures that all existing InfiniTime functionalities operate smoothly.
+
+The repository is archived in Zenodo: [![DOI](https://zenodo.org/badge/643984762.svg)](https://zenodo.org/badge/latestdoi/643984762)
 
 ## Contents
 
