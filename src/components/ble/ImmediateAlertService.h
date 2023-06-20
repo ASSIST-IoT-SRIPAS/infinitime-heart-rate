@@ -5,6 +5,8 @@
 #undef max
 #undef min
 
+#define ALERT_COUNT 5
+
 namespace Pinetime {
   namespace System {
     class SystemTask;
@@ -15,11 +17,16 @@ namespace Pinetime {
 
     class ImmediateAlertService {
     public:
-      enum class Levels : uint8_t { NoAlert = 0, MildAlert = 1, HighAlert = 2 };
+  //enum class Levels : uint8_t { NoAlert = 0,
+  //                                  MildAlert = 1,
+  //                                  HighAlert = 2,
+  //                                  AlertThree = 3,};
 
       ImmediateAlertService(Pinetime::System::SystemTask& systemTask, Pinetime::Controllers::NotificationManager& notificationManager);
       void Init();
       int OnAlertLevelChanged(uint16_t attributeHandle, ble_gatt_access_ctxt* context);
+
+      const char* ToString(uint8_t level);
 
     private:
       Pinetime::System::SystemTask& systemTask;
@@ -34,7 +41,7 @@ namespace Pinetime {
 
       struct ble_gatt_chr_def characteristicDefinition[3];
       struct ble_gatt_svc_def serviceDefinition[2];
-
+      const char* alerts[ALERT_COUNT]; 
       uint16_t alertLevelHandle;
     };
   }
