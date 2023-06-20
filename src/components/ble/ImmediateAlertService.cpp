@@ -14,24 +14,18 @@ namespace {
     return immediateAlertService->OnAlertLevelChanged(attr_handle, ctxt);
   }
 
-}
-
-const char* ImmediateAlertService::ToString(uint8_t level) {
-if(level < ALERT_COUNT)
-  return alerts[level];
-else
-  return alerts[0];
-
-// switch (level) {
-//    case ImmediateAlertService::Levels::NoAlert:
-//      return "Alert : None";
-//    case ImmediateAlertService::Levels::HighAlert:
-//      return "Alert : High";
-//    case ImmediateAlertService::Levels::MildAlert:
-//      return "Alert : Mild";
-//    default:
-//      return "";
-//  }
+  const char* ToString(ImmediateAlertService::Levels level) {
+    switch (level) {
+      case ImmediateAlertService::Levels::NoAlert:
+        return "Alert : None";
+      case ImmediateAlertService::Levels::HighAlert:
+        return "Alert : High";
+      case ImmediateAlertService::Levels::MildAlert:
+        return "Alert : Mild";
+      default:
+        return "";
+    }
+  }
 }
 
 ImmediateAlertService::ImmediateAlertService(Pinetime::System::SystemTask& systemTask,
@@ -51,12 +45,6 @@ ImmediateAlertService::ImmediateAlertService(Pinetime::System::SystemTask& syste
        .characteristics = characteristicDefinition},
       {0},
     } {
-
-  alerts[0] = "Alert : None";
-  alerts[1] = "Alert : Mild";
-  alerts[2] = "Alert : High";
-  alerts[3] = "Alert : Custom";
-  alerts[4] = "Alert : Happy Piotr";
 }
 
 void ImmediateAlertService::Init() {
@@ -71,7 +59,7 @@ void ImmediateAlertService::Init() {
 int ImmediateAlertService::OnAlertLevelChanged(uint16_t attributeHandle, ble_gatt_access_ctxt* context) {
   if (attributeHandle == alertLevelHandle) {
     if (context->op == BLE_GATT_ACCESS_OP_WRITE_CHR) {
-      auto alertLevel = static_cast<uint8_t>(context->om->om_data[0]);
+      auto alertLevel = static_cast<Levels>(context->om->om_data[0]);
       auto* alertString = ToString(alertLevel);
 
       NotificationManager::Notification notif;
