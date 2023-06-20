@@ -24,6 +24,17 @@ The repository is archived in Zenodo: [![DOI](https://zenodo.org/badge/643984762
 
 The implementation of the model uses the [keras2c library](https://f0uriest.github.io/keras2c/index.html) by Rory Conlin. keras2c is licensed under the MIT license.
 
+## Reproducibility
+
+The following software was used for building the RTOS and evaluating its performance:
+
+- Python 3.10.12
+- node: v16.3.0
+- npm: 7.15.1
+- lv_font_conv: "^1.5.2"
+
+Images built with different versions of the software may yield different results.
+
 ## Acknowledgements
 
 This work is part of the [ASSIST-IoT project](https://assist-iot.eu/) that has received funding from the EU’s Horizon 2020 research and innovation programme under grant agreement No 957258.
