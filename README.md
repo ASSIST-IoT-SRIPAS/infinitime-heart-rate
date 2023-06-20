@@ -1,10 +1,36 @@
+[![DOI](https://zenodo.org/badge/643984762.svg)](https://zenodo.org/badge/latestdoi/643984762)
+
 # About
 
-This repository is a fork of the [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime) project, developed for the purposes of Pilot 2: Smart Safety of workers of the [Assist-IoT](https://assist-iot.eu) Horizon 2020 project.
+This repository is a fork of the [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime) project, developed for the purposes of Pilot 2: Smart Safety of workers of the [ASSIST-IoT](https://assist-iot.eu) Horizon 2020 project.
 It deploys a neural network based model to improve the quality of readings from the onboard heart rate sensor.
-The model has been developed keeping in mind the principles of frugality, which ensures that all existing InfiniTime functionalities operate smoothely.
+The model has been developed keeping in mind the principles of frugality, which ensures that all existing InfiniTime functionalities operate smoothly.
 
-What follows is the description of the Infinitime project, which includes guidelines for building and deployment of the solution on the PineTime smartwatch.
+The repository is archived in Zenodo: [![DOI](https://zenodo.org/badge/643984762.svg)](https://zenodo.org/badge/latestdoi/643984762)
+
+## Contents
+
+- The main implementation of the model is in the [`HeartRateService.cpp` file](https://github.com/ASSIST-IoT-SRIPAS/infinitime-heart-rate/blob/main/src/components/ble/HeartRateService.cpp).
+- The model itself is in the [`model` directory](https://github.com/ASSIST-IoT-SRIPAS/infinitime-heart-rate/tree/main/model).
+    - `model.h5` is the model in the Keras H5 format.
+    - `filter_hr.c` and `filter_hr.h` is the model converted to C by the keras2c library.
+
+## Authors
+
+- [Kajetan Rachwał](https://orcid.org/0000-0003-1524-7877) – implementation of the model and the preprocessing stages in InfiniTime, integration
+- [Piotr Sowiński](https://orcid.org/0000-0002-2543-9461) – training the model and designing the preprocessing stages
+
+## Used libraries
+
+The implementation of the model uses the [keras2c library](https://f0uriest.github.io/keras2c/index.html) by Rory Conlin. keras2c is licensed under the MIT license.
+
+## Acknowledgements
+
+This work is part of the [ASSIST-IoT project](https://assist-iot.eu/) that has received funding from the EU’s Horizon 2020 research and innovation programme under grant agreement No 957258.
+
+----
+
+What follows is the description of the InfiniTime project, which includes instructions for building and deployment of the solution on the PineTime smartwatch.
 
 
 # [InfiniTime](https://github.com/InfiniTimeOrg/InfiniTime)

@@ -1,0 +1,125 @@
+{
+    "language": "eng", 
+    "license": "other-open", 
+    "title": "Frugal heart rate correction method for InfiniTime", 
+    "grants": [
+        {
+            "id": "10.13039/501100000780::957258"
+        }
+    ],
+    "communities": [
+        {
+            "identifier": "assist-iot"
+        }
+    ], 
+    "upload_type": "software", 
+    "creators": [
+        {
+            "orcid": "0000-0003-1524-7877", 
+            "affiliation": "Systems Research Institute, Polish Academy of Sciences", 
+            "name": "Kajetan Rachwa\u0142"
+        }, 
+        {
+            "orcid": "0000-0002-2543-9461", 
+            "affiliation": "Systems Research Institute, Polish Academy of Sciences", 
+            "name": "Piotr Sowi\u0144ski"
+        }, 
+        {
+            "name": "JF"
+        }, 
+        {
+            "name": "Riku Isokoski"
+        }, 
+        {
+            "name": "Avamander"
+        }, 
+        {
+            "name": "kieranc"
+        }, 
+        {
+            "name": "NeroBurner"
+        }, 
+        {
+            "affiliation": "Omnimaga", 
+            "name": "Tim Keller"
+        }, 
+        {
+            "name": "FintasticMan"
+        }, 
+        {
+            "name": "Yehoshua Pesach Wallach"
+        }, 
+        {
+            "name": "joaquim.org"
+        }, 
+        {
+            "affiliation": "@jizt-it", 
+            "name": "Diego Miguel Lozano"
+        }, 
+        {
+            "name": "Martin Hub"
+        }, 
+        {
+            "name": "Sravan Senthilnathan"
+        }, 
+        {
+            "name": "Adam Pigg"
+        }, 
+        {
+            "name": "Jonathan Vander Mey"
+        }, 
+        {
+            "affiliation": "@vortexntnu", 
+            "name": "Petter Hoem Sletsj\u00f8e"
+        }, 
+        {
+            "name": "Eli Weiss"
+        }, 
+        {
+            "name": "James A. Jerkins"
+        }, 
+        {
+            "name": "Tim"
+        }, 
+        {
+            "name": "Steveis"
+        }, 
+        {
+            "name": "Christoph Honal"
+        }, 
+        {
+            "name": "mabuch"
+        }, 
+        {
+            "name": "Peter Feerick"
+        }, 
+        {
+            "affiliation": "PickNik Robotics", 
+            "name": "Stephanie Eng"
+        }, 
+        {
+            "name": "The King"
+        }, 
+        {
+            "name": "clemensvonmolo"
+        }, 
+        {
+            "affiliation": "ShadowAcre.LTD", 
+            "name": "Joe Eaves"
+        }, 
+        {
+            "name": "mruss77"
+        }, 
+        {
+            "name": "Samuel"
+        }, 
+        {
+            "name": "Florian"
+        }, 
+        {
+            "name": "Avery"
+        }
+    ], 
+    "access_right": "open", 
+    "description": "<p>This repository is a fork of the&nbsp;<a href=\"https://github.com/InfiniTimeOrg/InfiniTime\">InfiniTime</a>&nbsp;project, developed for the purposes of Pilot 2: Smart Safety of workers of the&nbsp;<a href=\"https://assist-iot.eu/\">ASSIST-IoT</a>&nbsp;Horizon 2020 project.&nbsp;It deploys a neural network based model to improve the quality of readings from the onboard heart rate sensor.&nbsp;The model has been developed keeping in mind the principles of frugality, which ensures that all existing InfiniTime functionalities operate smoothly.</p>\n\n<p><strong>Contents</strong></p>\n\n<ul>\n\t<li>The main implementation of the model is in the&nbsp;<a href=\"https://github.com/ASSIST-IoT-SRIPAS/infinitime-heart-rate/blob/main/src/components/ble/HeartRateService.cpp\"><code>HeartRateService.cpp</code>&nbsp;file</a>.</li>\n\t<li>The model itself is in the&nbsp;<a href=\"https://github.com/ASSIST-IoT-SRIPAS/infinitime-heart-rate/tree/main/model\"><code>model</code>&nbsp;directory</a>.\n\t<ul>\n\t\t<li><code>model.h5</code>&nbsp;is the model in the Keras H5 format.</li>\n\t\t<li><code>filter_hr.c</code>&nbsp;and&nbsp;<code>filter_hr.h</code>&nbsp;is the model converted to C by the keras2c library.</li>\n\t</ul>\n\t</li>\n</ul>\n\n<p><strong>Authors</strong></p>\n\n<ul>\n\t<li><a href=\"https://orcid.org/0000-0003-1524-7877\">Kajetan Rachwa\u0142</a>&nbsp;&ndash; implementation of the model and the preprocessing stages in InfiniTime, integration</li>\n\t<li><a href=\"https://orcid.org/0000-0002-2543-9461\">Piotr Sowi\u0144ski</a>&nbsp;&ndash; training the model and designing the preprocessing stages</li>\n</ul>\n\n<p><strong>Used libraries</strong></p>\n\n<p>The implementation of the model uses the&nbsp;<a href=\"https://f0uriest.github.io/keras2c/index.html\">keras2c library</a>&nbsp;by Rory Conlin. keras2c is licensed under the MIT license.</p>\n\n<p><strong>Acknowledgements</strong></p>\n\n<p>This work is part of the&nbsp;<a href=\"https://assist-iot.eu/\">ASSIST-IoT project</a>&nbsp;that has received funding from the EU&rsquo;s Horizon 2020 research and innovation programme under grant agreement No 957258.</p>"
+}

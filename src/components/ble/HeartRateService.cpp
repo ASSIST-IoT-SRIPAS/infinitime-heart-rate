@@ -544,18 +544,6 @@ void HeartRateService::insert_into_buffer_1(float value){
   }
   buffer_1[i+1] = value;
   buffer_1_index++;
-
-  // todo change to inserting into a sorted array
-  // for(int i = 1; i < buffer_1_index; i++){
-  //   float key = buffer_1[i];
-  //   int j = i - 1;
-  //   while(j >= 0 && buffer_1[j] > key){
-  //     buffer_1[j+1] = buffer_1[j];
-  //     j--;
-  //   }
-  //   buffer_1[j+1] = key;
-  // }
-  
 }
 
 
