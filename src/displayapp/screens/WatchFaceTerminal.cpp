@@ -134,7 +134,7 @@ void WatchFaceTerminal::Refresh() {
     }
   }
 
-  heartbeat = heartRateController.HeartRate();
+  heartbeat = heartRateController.MLHeartRate();
   heartbeatRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
   if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
     if (heartbeatRunning.Get()) {

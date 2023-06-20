@@ -12,6 +12,10 @@ void HeartRateController::Update(HeartRateController::States newState, uint8_t h
   }
 }
 
+void HeartRateController::UpdateML(uint8_t heartRate) {
+  this->mlHeartRate = heartRate;
+}
+
 void HeartRateController::Start() {
   if (task != nullptr) {
     state = States::NotEnoughData;

@@ -21,6 +21,7 @@ namespace Pinetime {
       void Start();
       void Stop();
       void Update(States newState, uint8_t heartRate);
+      void UpdateML(uint8_t heartRate);
 
       void SetHeartRateTask(Applications::HeartRateTask* task);
 
@@ -32,12 +33,17 @@ namespace Pinetime {
         return heartRate;
       }
 
+      uint8_t MLHeartRate() const {
+        return mlHeartRate;
+      }
+
       void SetService(Pinetime::Controllers::HeartRateService* service);
 
     private:
       Applications::HeartRateTask* task = nullptr;
       States state = States::Stopped;
       uint8_t heartRate = 0;
+      uint8_t mlHeartRate = 0;
       Pinetime::Controllers::HeartRateService* service = nullptr;
     };
   }
