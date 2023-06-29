@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <drivers/Bma421.h>
 #include <components/ble/MotionService.h>
+#include <components/ble/HeartRateService.h>
 
 namespace Pinetime {
   namespace Controllers {
@@ -50,6 +51,9 @@ namespace Pinetime {
 
       void Init(Pinetime::Drivers::Bma421::DeviceTypes types);
       void SetService(Pinetime::Controllers::MotionService* service);
+      void setHeartRateService(Pinetime::Controllers::HeartRateService* service) {
+        this->hrservice = service;
+      }
 
     private:
       uint32_t nbSteps;
@@ -61,6 +65,7 @@ namespace Pinetime {
       bool isSensorOk = false;
       DeviceTypes deviceType = DeviceTypes::Unknown;
       Pinetime::Controllers::MotionService* service = nullptr;
+      Pinetime::Controllers::HeartRateService* hrservice = nullptr;
 
       int16_t lastXForShake = 0;
       int16_t lastYForShake = 0;

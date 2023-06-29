@@ -86,7 +86,7 @@ void HeartRate::Refresh() {
       lv_label_set_text_static(label_hr, "000");
       break;
     default:
-      lv_label_set_text_fmt(label_hr, "%03d", heartRateController.HeartRate());
+      lv_label_set_text_fmt(label_hr, "%03d", heartRateController.MLHeartRate());
   }
 
   lv_label_set_text_static(label_status, ToString(state));
