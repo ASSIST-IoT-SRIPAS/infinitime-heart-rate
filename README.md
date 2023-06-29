@@ -29,8 +29,8 @@ The implementation of the model uses the [keras2c library](https://f0uriest.gith
 The following software was used for building the RTOS and evaluating its performance:
 
 - Python 3.10.12
-- node: v16.3.0
-- npm: 7.15.1
+- node: v17.9.1
+- npm: 8.19.3
 - lv_font_conv: "^1.5.2"
 
 Images built with different versions of the software may yield different results.
